@@ -1,6 +1,7 @@
 //LOGIKEN 
 const todoRouter = require('express').Router();
 const todoController = require('../controllers/todoController')
+const auth = require('../middlewares/authorization')
 
 
 //get all
@@ -12,17 +13,17 @@ todoRouter.get('/:id', async (req, res) => {
     todoController.findTodo(req,res)
 })
 //create one
-todoRouter.post('/create', async (req, res) => {
+todoRouter.post('/create', auth, async (req, res) => {
     todoController.createTodo(req,res)
 })
 
 //update one
-todoRouter.patch('/update/:id', async (req, res) => {
+todoRouter.patch('/update/:id', auth, async (req, res) => {
     todoController.createTodo(req,res) 
 })
 
 //delete one
-todoRouter.delete('/delete/:id', async (req, res) => {
+todoRouter.delete('/delete/:id', auth, async (req, res) => {
    todoController.deleteTodo(req, res)  
 })
 

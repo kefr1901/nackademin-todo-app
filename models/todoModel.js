@@ -28,11 +28,9 @@ function findToDos() {
     })
 }
 
-function updateToDo(id, title, done) {
+function updateToDo(id, title, done, groups ) {
     return new Promise((resolve, reject) => {
-    //postCollection.find({ _id: id }, (err, docs) => {
-        //console.log(id, title, done)
-            postCollection.update({ _id: id }, { title: title, done:done}, (err, updateDoc) => {
+            postCollection.update({ _id: id }, { title: title, done:done , groups: groups }, (err, updateDoc) => {
                 resolve(updateDoc)
             });
        // });

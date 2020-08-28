@@ -20,8 +20,7 @@ async function findUsers(req, res){
 }
 
 async function createUser(req, res){
-    var user = { username: req.body.username, password: req.body.password, role: req.body.role};
-
+    var user = { username: req.body.username, password: req.body.password, groups: req.body.groups};
     await userModel.insertUser(user)
     res.json({user});
     //res.render("./index")

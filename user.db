@@ -1,4 +1,4 @@
-{"username":"fabian","password":"fabian123","role":"admin","_id":"4Tns0ZBt0SSXmnxl"}
-{"username":"kevin","password":"kevin123","role":"user","_id":"MpR9DDEZBHze2DWS"}
-{"username":"emma","password":"emma123","role":"admin","_id":"cRCOJTsEOIXurZsP"}
-{"username":"stephan","password":"stephan123","role":"user","_id":"pErjoqfFNxB9I3a7"}
+{"username":"fabian","password":"$2a$10$3Jixk59rTJGeXMHhwON3NeXnhllZNQy5k5HqrqGYqN.6YjZLortie","groups":"user","_id":"3NJeHnFH2SdkbN7d"}
+{"username":"kevin","password":"$2a$10$C2IehXn..kMfXAH3o3xW/eDkJeSitS7aP8RDeO4kgHq7cm/lpGEY2","groups":"user","_id":"gDLbvnaDXnKjLxH4"}
+{"username":"fabian","password":"$2a$10$4a1RI2nzw1yYw6Sd1U89u.ejV8sXkzN4UxBbbm31Y81xQGmO9DHCK","groups":"user","_id":"icK7UQZl4h0NpzsQ"}
+{"username":"fabian","password":"$2a$10$gKTRDHkxFux0SFyhBmPXL.3a49MwnxKTOI6/vDl5eM.942o0JaEKa","groups":"user","_id":"shbgilWFsGmqbZes"}

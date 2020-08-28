@@ -3,6 +3,7 @@ const userRouter = require('express').Router();
 const userController = require('../controllers/userController')
 
 
+
 //get all
 userRouter.get('/', async (req, res) => {
     userController.findUsers(req,res)
