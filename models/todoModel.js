@@ -12,7 +12,15 @@ function insertToDB(toDo) {
     })
 }
 
-function findToDo() {
+function findToDo(id) {
+    return new Promise((resolve, reject) => {
+        postCollection.find({_id: id}, function (err, docs) {
+            resolve(docs)
+        });
+    })
+}
+
+function findToDos() {
     return new Promise((resolve, reject) => {
         postCollection.find({}, function (err, docs) {
             resolve(docs)
@@ -32,7 +40,6 @@ function updateToDo(id, title, done) {
 
 }
 
-
 function deleteToDo(id){
     return new Promise((resolve, reject) => {
     //postCollection.find({ _id: id }, (err, docs) => {
@@ -44,4 +51,4 @@ function deleteToDo(id){
 }
 
 
-module.exports = { insertToDB, findToDo, updateToDo, deleteToDo}
+module.exports = { insertToDB, findToDo, findToDos, updateToDo, deleteToDo}
