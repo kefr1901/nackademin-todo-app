@@ -13,17 +13,17 @@ todoRouter.get('/:id', async (req, res) => {
     todoController.findTodo(req,res)
 })
 //create one
-todoRouter.post('/create', auth, async (req, res) => {
+todoRouter.post('/create', auth.auth, async (req, res) => {
     todoController.createTodo(req,res)
 })
 
 //update one
-todoRouter.patch('/update/:id', auth, async (req, res) => {
-    todoController.createTodo(req,res) 
+todoRouter.patch('/update/:id', auth.auth, auth.user, async (req, res) => {
+    todoController.updateTodo(req,res) 
 })
 
 //delete one
-todoRouter.delete('/delete/:id', auth, async (req, res) => {
+todoRouter.delete('/delete/:id', auth.auth, auth.admin,  async (req, res) => {
    todoController.deleteTodo(req, res)  
 })
 

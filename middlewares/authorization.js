@@ -9,10 +9,33 @@ function auth(req,res,next){
     try{
         const payload = jwt.verify(token, process.env.SECRET)
         req.user = payload
+        console.log(payload);
         next()
     }catch(e){
         res.sendStatus(403)
     }
 }
 
-module.exports = auth;
+function user(req, res, next) {
+        
+    console.log('Groups: ', req.user.groups)
+    if (req.user.groups == 'admin' || req.user.groups == 'user') {
+        next()
+    } else {
+        console.log("Your are not an Admin or A User.")
+        return res.sendStatus(403)
+    }
+}
+function admin(req, res, next) {
+    console.log('Groups: ', req.user.groups)
+    if(req.user.groups == 'admin'){
+        next()
+    } else {
+        console.log('You are not an Admin')
+        return res.sendStatus(403)
+
+    }
+}
+
+
+module.exports = {auth, admin, user};
