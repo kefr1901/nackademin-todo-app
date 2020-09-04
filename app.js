@@ -21,7 +21,4 @@ app.get("/", (req, res) => {
     res.sendFile("index.html" , {root:__dirname})
 });
 
-
-app.listen(3001, () => {
-    console.log('lyssnar på: http://localhost:3000')
-})
+module.exports= app

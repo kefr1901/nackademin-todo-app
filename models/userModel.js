@@ -1,8 +1,14 @@
 const dataStore = require('nedb');
 const express = require('express')
 const bcrypt = require('bcryptjs');
+let userCollection
 
-let userCollection = new dataStore({ filename: './user.db', autoload: true });
+if(process.env.ENVIRONMENT === "development"){
+    userCollection = new dataStore({ filename: './database/development/user.db', autoload: true });
+
+}else{
+    userCollection = new dataStore({ filename: './database/test/user.db', autoload: true });
+}
 
 
 function insertUser(user) {
@@ -81,5 +87,24 @@ function checkUserNameExist(username) {
     })
 }
 
+function count() {
+    return new Promise((resolve, reject) => {
+        userCollection.count({}, function (err, docs) {
+            console.log(docs)
+            resolve(docs)
+        });
+    })
+}
 
-module.exports = { insertUser, findUser, findUsers, updateUser, deleteUser , authUser, checkUserNameExist}
+
+function clear(){
+    return new Promise((resolve, reject) => {
+    userCollection.remove({ }, { multi: true }, function (err, numRemoved) {
+        resolve()
+      });
+});
+}
+
+
+
+module.exports = { insertUser, findUser, findUsers, updateUser, deleteUser , authUser, checkUserNameExist, clear, count}

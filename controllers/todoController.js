@@ -9,7 +9,6 @@ router.get("/", (req, res) => {
 
 async function findTodo(req, res){
     const id = req.params.id;
-
     console.log(req.user.groups);
     const todos = await todoModel.findToDo(id)
     res.json({todos})
@@ -25,7 +24,6 @@ async function createTodo(req, res){
     var toDo = { title: req.body.title, done: req.body.done , user: req.user.userId ,};
     await todoModel.insertToDB(toDo)
     res.json({toDo});
-    //res.render("./index")
 }
 
 async function updateTodo(req, res){

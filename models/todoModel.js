@@ -1,7 +1,14 @@
 const dataStore = require('nedb');
 const express = require('express')
 
-let postCollection = new dataStore({ filename: './post.db', autoload: true });
+let postCollection
+
+if(process.env.ENVIRONMENT === "development"){
+   postCollection = new dataStore({ filename: './database/development/post.db', autoload: true });
+
+}else{
+    postCollection = new dataStore({ filename: './database/test/post.db', autoload: true });
+}
 
 
 function insertToDB(toDo) {
@@ -49,4 +56,23 @@ function deleteToDo(id){
 }
 
 
-module.exports = { insertToDB, findToDo, findToDos, updateToDo, deleteToDo}
+function clear(){
+    return new Promise((resolve, reject) => {
+    postCollection.remove({ }, { multi: true }, function (err, numRemoved) {
+        resolve()
+      });
+});
+}
+
+function count() {
+    return new Promise((resolve, reject) => {
+        postCollection.count({}, function (err, docs) {
+            console.log(docs)
+            resolve(docs)
+        });
+    })
+}
+
+
+
+module.exports = { insertToDB, findToDo, findToDos, updateToDo, deleteToDo, clear, count}

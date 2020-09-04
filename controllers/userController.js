@@ -20,11 +20,16 @@ async function findUsers(req, res){
 }
 
 async function createUser(req, res){
-    var user = { username: req.body.username, password: req.body.password, groups: req.body.groups};
-    await userModel.insertUser(user)
-    res.json({user});
-    //res.render("./index")
+    try{
+        const user = { username: req.body.username, password: req.body.password, groups: req.body.groups};
+        await userModel.insertUser(user)
+        res.json({user});
+        
+  }catch(error){
+      res.status(400).json(error)
+  }
 }
+    
 
 async function updateUser(req, res){
     const updateUser = await userModel.updateUser(req.params.id, req.body.username , req.body.password)
