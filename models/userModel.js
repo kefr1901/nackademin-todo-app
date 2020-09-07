@@ -1,6 +1,7 @@
 const dataStore = require('nedb');
 const express = require('express')
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
 let userCollection
 
 if(process.env.ENVIRONMENT === "development"){
@@ -11,14 +12,14 @@ if(process.env.ENVIRONMENT === "development"){
 }
 
 
-function insertUser(user) {
+function insertUser(newUser) {
     
         return new Promise(async(resolve, reject) => {
-            if(await checkUserNameExist(user.username)){
+            if(await checkUserNameExist(newUser.username)){
                 reject("User already exist");
             }
-             user.password = bcrypt.hashSync(user.password, 10)
-             userCollection.insert(user, (err, newDoc) => {
+             newUser.password = bcrypt.hashSync(newUser.password, 10)
+             userCollection.insert(newUser, (err, newDoc) => {
                  resolve(newDoc)
              });
          })
@@ -58,6 +59,7 @@ function deleteUser(id){
 }
 
 function authUser(username, password) {
+
     console.log("kommer in i authUser")
     return new Promise((resolve, reject) => {
         userCollection.findOne({username: username }, function (err, docs)  {
@@ -65,14 +67,16 @@ function authUser(username, password) {
                 return reject('No user found')
             }
             if(!bcrypt.compareSync(password,docs.password)){
+                //console.log(password, docs.password)
                 return reject('Invalid password, try again')
             }
 
             resolve(docs)
-            console.log(docs)
+            //console.log(docs)
         });
     })
 }
+
 
 function checkUserNameExist(username) {
     return new Promise((resolve, reject) => {
@@ -105,6 +109,29 @@ function clear(){
 });
 }
 
+async function login(username, password) {
+    try{
+        console.log("TESTING password: " + password)
+        const result = await authUser(username, password)
+        
+        const payload = {userId:result._id, username:result.username , groups: result.groups}
+        console.log(payload);
+   
+        const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '7d' })
+       // console.log(token )
+        //res.json({token});
+        return {token};
+      
+        
+  }catch(error){
+       // res.status(400).json(error)
+       return {message: error}
+  }
+
+    
+}
 
 
-module.exports = { insertUser, findUser, findUsers, updateUser, deleteUser , authUser, checkUserNameExist, clear, count}
+
+
+module.exports = { insertUser, findUser, findUsers, updateUser, deleteUser , authUser, checkUserNameExist, clear, count, login}

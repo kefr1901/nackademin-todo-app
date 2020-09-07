@@ -3,6 +3,7 @@ const express = require('express')
 const todoRouter = require('./routes/todo')
 const userRouter = require('./routes/user')
 const authRouter = require('./routes/auth')
+const listRouter = require('./routes/list')
 const cors = require('cors')
 
 const app = express()
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/todos',todoRouter); 
 app.use('/user',userRouter);
 app.use('/auth', authRouter);
+app.use('/list', listRouter);
 app.use(express.static(__dirname + '/public'));
 
 app.get("/", (req, res) => {

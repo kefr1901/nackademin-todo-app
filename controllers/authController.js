@@ -10,13 +10,9 @@ async function login(req, res) {
         const result = await userModel.authUser(username, password)
         const payload = {userId:result._id, username:result.username , groups: result.groups}
         console.log(payload);
-       /* if( result.groups.includes('admin')){
-            payload.isAdmin=true 
-        } */
-        //console.log(payload)
         const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '7d' })
-        console.log(token)
-        res.json({token});
+       // console.log(token)
+        res.json(token);
       
         
   }catch(error){
