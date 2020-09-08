@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 const userModel = require('../models/userModel')
 
 
-
 async function login(req, res) {
     try{
         var username = req.body.username;

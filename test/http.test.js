@@ -4,13 +4,16 @@ const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 const {expect, request} = chai
 const userModel = require('../models/userModel')
+const listModel = require('../models/listModel')
 const loginRouter = require('../routes/auth')
 const { json } = require('express')
+const { post } = require('../app.js')
 
 
-describe('try create a user and login', () => {
+describe('test RESTful resource todorouter & todocontroller', () => {
     beforeEach(async function()  {
-        await userModel.clear();
+        await listModel.clear();
+        await userModel.clear()
         //create a new user
             const user = {
                 username :"philip",
@@ -19,65 +22,76 @@ describe('try create a user and login', () => {
             }
 
             const usercopy = {...user}
-            //console.log(user.password)
             const result = await userModel.insertUser(user)
-
-       // console.log("RESULT" + JSON.stringify(result))
-        //console.log(result.username)
-       // this.currentTest.userID = result._id
-        //console.log("USER PASSWORD:" + user.password);
-        //console.log("result PASSWORD:" + result.password)
-    
-        let token = await userModel.login(user.username , usercopy.password )
-        console.log(token.token)
+            //console.log("USER PASSWORD:" + user.password);
+            //console.log("result PASSWORD:" + result.password)
+             let loginToken = await userModel.login(user.username , usercopy.password )
+            // console.log(token.token)
+            this.currentTest.token = loginToken.token
+            console.log(loginToken)
+        
     });
-    it('should create a new person with token', async function ()  {
-        //console.log(this.test.token);
-       // console.log(this.test.userID)
+    
+    it('should test to create a todolist with a title',  function ()  {
+        let body = {
+            title: "TESTLISTA"
+        }
+        request(app)
+        .post('/lists')
+        .set('Authorization', `Bearer ${this.test.token}`)
+        .send(body)  
+        .end((err, res) => {
+            console.log(res.body)
+            expect(res).to.have.status(200)
+            expect(res).to.be.json
+           // expect(res.body).to.have.keys(['title', 'userId', '_id'])
+         })
+      
+    })
+    it('should get all lists', async function ()  {
+        const list = {
+            title : "hej ny lista",
+            postId : "rrpgXrkQEIjhweiW"
+        }
+        const result = await listModel.insertToDB(list)
+        console.log(result);
+
+        request(app)
+        .get('/lists')
+        .set('Authorization', `Bearer ${this.test.token}`)
+        .send()  
+        .end((err, res) => {
+            expect(res).to.be.a("object")
+            expect(res).to.have.status(200)
+            expect(res).to.be.json
+         })
       
     })
 })
+it('should get a specific list', async function ()  {
+    //create a new list 
+    const list = {
+        title: "Nya lista",
+        
+    }
+    //insert the list
+    const result = await listModel.insertToDB(list)
+    
+    console.log(result);
 
+    const body = {
+        _id: "odcVQe7NJkRHqmWO"
+    }
+    request(app)
+    .get('/lists/:id')
+    .set('Authorization', `Bearer ${this.test.token}`)
+    .send(body)  
+    .end((err, res) => {
+        expect(res).to.be.a("object")
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        //expect(res).to.have.keys(['title', '_id'])
+     })
+  
+})
 
-/*
-const userModel = require('../models/userModel');
-const chai = require('chai');
-const chaiHttp = require('chai-http')
-chai.use(chaiHttp)
-
-const { expect, request, should } = chai
-const app = require('../app.js')
-
-describe('Integation test on login and register', () => {
-        this.currentTest = {}
-        beforeEach(async () => {
-            await userModel.clear()
-            this.currentTest.user = await userModel.postUserModel({
-                username: "yde",
-                password: "root",
-                role: 'User',
-                _id: '2'
-            })
-             console.log(this.currentTest.user);
-
-            // this.currentTest.userID = user.id
-            // this.currentTest.token =
-            //     await User.authenticate("yde", "root")
-        })
-        it('Should create a user', () => { //how to test a hashed password?
-            // console.log(this.currentTest.user);
-            // let fields = this.currentTest.user
-            // request(app)
-            // post('/user')
-            // set('Authorization', Bearer ${this.test.token})
-            //     .set('Content-Type', application/json)
-            //     .send(fields)
-            //     .end((err, res) => {
-            //         expect(res).to.have.status(201)
-            //         expect(res).to.be.json
-            //         expect(res.body).to.have.keys(['fields'])
-            //     })
-
-        })
-    })
-*/

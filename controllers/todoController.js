@@ -21,7 +21,7 @@ async function findTodos(req, res){
 }
 
 async function createTodo(req, res){
-    var toDo = { title: req.body.title, done: req.body.done , user: req.user.userId ,};
+    var toDo = { title: req.body.title, done: req.body.done , list: req.body.listId, user: req.user.userId  ,};
     await todoModel.insertToDB(toDo)
     res.json({toDo});
 }

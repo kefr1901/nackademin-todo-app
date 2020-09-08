@@ -4,16 +4,17 @@ const listController = require('../controllers/listController')
 const auth = require('../middlewares/authorization')
 
 
-//get all
+//get all list
 listRouter.get('/', async (req, res) => {
-    listController.findList(req,res)
+    listController.findLists(req,res)
 })
 //get one
 listRouter.get('/:id', async (req, res) => {
-    listController.findLists(req,res)
+   listController.findList(req,res)
 })
 //create one
-listRouter.post('/create', auth.auth, async (req, res) => {
+listRouter.post('/', auth.auth, (req, res) => {
+    
     listController.createList(req,res)
 })
 

@@ -1,40 +1,50 @@
-const dataStore = require('nedb');
+
+const Datastore = require('nedb-promises');
 const express = require('express')
 
 let listCollection
 
-if(process.env.ENVIRONMENT === "development"){
-   listCollection = new dataStore({ filename: './database/development/list.db', autoload: true });
+if (process.env.ENVIRONMENT === "development") {
+    listCollection = new Datastore({ filename: './database/development/list.db', autoload: true });
 
-}else{
-    postCollection = new dataStore({ filename: './database/test/post.db', autoload: true });
+} else {
+    listCollection = new Datastore({ filename: './database/test/list.db', autoload: true });
 }
 
 
-function insertToDB(toDo) {
-    return new Promise((resolve, reject) => {
-        listCollection.insert(toDo, (err, newDoc) => {
-            resolve(newDoc)
-        });
-    })
+async function insertToDB(title, userId) {
+    let test = {
+        title: title,
+        userId: userId
+    }
+    //console.log(test.userId)
+    console.log("kommer in i insert")
+    const result = await listCollection.insert({test })
+    //console.log(result)
+
+    console.log("efter insert")
+    return result;
+
 }
 
-function findList(id) {
-    return new Promise((resolve, reject) => {
-        listCollection.find({_id: id}, function (err, docs) {
-            resolve(docs)
-        });
-    })
+
+
+async function findLists() {
+
+    const result = await listCollection.find({});
+    console.log(result)
+    return result;
+
 }
 
-function findLists() {
-    return new Promise((resolve, reject) => {
-        listCollection.find({}, function (err, docs) {
-            resolve(docs)
-        });
-    })
+async function findList(id) {
+
+    const result = await listCollection.find({ _id: id })
+    console.log(result)
+    return result;
 }
 
+/*
 function updateList(id, title, done, groups ) {
     return new Promise((resolve, reject) => {
             listCollection.update({ _id: id }, { title: title, done:done , groups: groups }, (err, updateDoc) => {
@@ -54,16 +64,12 @@ function deleteList(id){
    // });
 });
 }
+*/
 
+async function clear() {
 
-function clear(){
-    return new Promise((resolve, reject) => {
-    listCollection.remove({ }, { multi: true }, function (err, numRemoved) {
-        resolve()
-      });
-});
-}
-
+    const doc = await listCollection.remove({}, { multi: true });
+};
 function count() {
     return new Promise((resolve, reject) => {
         listCollection.count({}, function (err, docs) {
@@ -75,4 +81,4 @@ function count() {
 
 
 
-module.exports = { insertToDB, findList, findLists, updateList, deleteList, clear, count}
+module.exports = { insertToDB, clear, count, findLists, findList }

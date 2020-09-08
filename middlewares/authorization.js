@@ -12,6 +12,7 @@ function auth(req,res,next){
         console.log(payload);
         next()
     }catch(e){
+
         res.sendStatus(403)
     }
 }
