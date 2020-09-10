@@ -10,29 +10,30 @@ const { json } = require('express')
 const { post } = require('../app.js')
 
 
-describe('test RESTful resource todorouter & todocontroller', () => {
+describe('test RESTful resource listrouter & listcontroller', () => {
     beforeEach(async function()  {
         await listModel.clear();
         await userModel.clear()
-        //create a new user
             const user = {
                 username :"philip",
                 password : "ydehed",
                 groups:["admin"]
             }
-
             const usercopy = {...user}
             const result = await userModel.insertUser(user)
             //console.log("USER PASSWORD:" + user.password);
-            //console.log("result PASSWORD:" + result.password)
+            //console.log(result)
              let loginToken = await userModel.login(user.username , usercopy.password )
-            // console.log(token.token)
+            
+             //console.log("får tillnaka användare" + result._id);
             this.currentTest.token = loginToken.token
-            console.log(loginToken)
+            this.currentTest.userId = result._id
+            //console.log(loginToken)
         
     });
     
     it('should test to create a todolist with a title',  function ()  {
+       // console.log(this.test.userId);
         let body = {
             title: "TESTLISTA"
         }
@@ -50,11 +51,12 @@ describe('test RESTful resource todorouter & todocontroller', () => {
     })
     it('should get all lists', async function ()  {
         const list = {
-            title : "hej ny lista",
-            postId : "rrpgXrkQEIjhweiW"
+            title : "Lägger till en ny lista",
+            listId : "rrpgXrkQEIjhweiW"
         }
         const result = await listModel.insertToDB(list)
-        console.log(result);
+        //console.log(result);
+        //console.log(result.userId);
 
         request(app)
         .get('/lists')
@@ -71,27 +73,71 @@ describe('test RESTful resource todorouter & todocontroller', () => {
 it('should get a specific list', async function ()  {
     //create a new list 
     const list = {
-        title: "Nya lista",
-        
+        title: "New list before GET list",
+        userId: this.test.userId
     }
-    //insert the list
     const result = await listModel.insertToDB(list)
-    
-    console.log(result);
-
-    const body = {
-        _id: "odcVQe7NJkRHqmWO"
-    }
     request(app)
-    .get('/lists/:id')
+    .get(`/lists/${result._id}`)
     .set('Authorization', `Bearer ${this.test.token}`)
-    .send(body)  
+    .send()  
     .end((err, res) => {
+        expect(res).to.be
         expect(res).to.be.a("object")
         expect(res).to.have.status(200)
         expect(res).to.be.json
+     })
+  
+})
+
+it('should update a specific list', async function ()  {
+    //create a new list 
+    const list = {
+        title: "New list",
+        userId: this.test.userId
+    }
+    const result = await listModel.insertToDB(list)
+
+    const body = {
+            title: "New title on the new list",
+            userId: this.test.userId
+        }
+    
+    request(app)
+    .get(`/lists/${result._id}`)
+    .set('Authorization', `Bearer ${this.test.token}`)
+    .send(body)  
+    .end((err, res) => {
+        expect(res).to.be
+        expect(res).to.be.a("object")
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+     
         //expect(res).to.have.keys(['title', '_id'])
      })
   
 })
+
+it('should delete a specific list', async function ()  {
+    //create a new list 
+    const list = {
+        title: "Nya lista",
+        userId: this.test.userId
+    }
+    const result = await listModel.insertToDB(list)
+    request(app)
+    .get(`/lists/${result._id}`)
+    .set('Authorization', `Bearer ${this.test.token}`)
+    .send()  
+    .end((err, res) => {
+        expect(res).to.be
+        expect(res).to.be.a("object")
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+    
+     })
+  
+})
+
+
 

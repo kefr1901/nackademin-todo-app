@@ -1,4 +1,4 @@
-/*const chai = require('chai')
+const chai = require('chai')
 //const { expect } = require('chai');
 const countModel = require('../models/userModel')
 chai.should();
@@ -14,4 +14,4 @@ describe('count all users', () => {
         result.should.equal(1)
         result.should.not.equal(6)
     })
-})*/
+}) 

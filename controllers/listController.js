@@ -28,14 +28,28 @@ async function findLists(req, res){
 
 
 async function findList(req, res){
-    const list = await listModel.findList()
+    let listId = req.params.id
+    console.log(listId)
+    const list = await listModel.findList(listId)
     console.log(list);
-    res.status(200).json(lists)
+    res.status(200).json(list)
    
+}
+
+async function updateList(req, res){
+    let title = req.body.title
+    let listId = req.body.listId
+    const updatelist = await listModel.updateList(title ,listId)
+    res.status(200).json(updateList)
+
+}
+
+async function deleteList(req, res){
+    const deleteList = await todoModel.deleteToDo(req.params.id)
+    res.status(200).json(deleteList);
+    
 }
 
 
 
-
-
-module.exports = {createList, findLists, findList} 
+module.exports = {createList, findLists, findList, updateList, deleteList} 

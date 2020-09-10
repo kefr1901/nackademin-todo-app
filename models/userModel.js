@@ -1,14 +1,14 @@
-const dataStore = require('nedb');
+const Datastore = require('nedb');
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 let userCollection
 
 if(process.env.ENVIRONMENT === "development"){
-    userCollection = new dataStore({ filename: './database/development/user.db', autoload: true });
+    userCollection = new Datastore({ filename: './database/development/user.db', autoload: true });
 
 }else{
-    userCollection = new dataStore({ filename: './database/test/user.db', autoload: true });
+    userCollection = new Datastore({ filename: './database/test/user.db', autoload: true });
 }
 
 

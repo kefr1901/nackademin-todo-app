@@ -75,4 +75,5 @@ function count() {
 
 
 
+
 module.exports = { insertToDB, findToDo, findToDos, updateToDo, deleteToDo, clear, count}

@@ -1,7 +1,11 @@
-{"test":{"title":{"title":"hej ny lista","postId":"rrpgXrkQEIjhweiW"}},"_id":"05ED2s5t7yN03Ho1"}
-{"test":{"title":{"title":"Nya lista"}},"_id":"1YKqZfnVt7XJYj9i"}
-{"$$deleted":true,"_id":"05ED2s5t7yN03Ho1"}
-{"$$deleted":true,"_id":"1YKqZfnVt7XJYj9i"}
-{"test":{"title":"TESTLISTA","userId":"kiPRsHLO3FK1oB1K"},"_id":"g4qqyI2wU57vLz3Q"}
-{"$$deleted":true,"_id":"g4qqyI2wU57vLz3Q"}
-{"test":{"title":{"title":"hej ny lista","postId":"rrpgXrkQEIjhweiW"}},"_id":"KHGgruSSZhrhKusZ"}
+{"test":{"title":{"title":"Lägger till en ny lista","listId":"rrpgXrkQEIjhweiW"}},"_id":"uqaI39kIckQ7b13k"}
+{"test":{"title":{"title":"New list before GET list"}},"_id":"BcMKHn3rYyM1QMSz"}
+{"test":{"title":{"title":"New list"}},"_id":"bXnFCQ3rdrd5PXJ8"}
+{"test":{"title":{"title":"Nya lista"}},"_id":"XGWrrNgbdwE7l9CY"}
+{"$$deleted":true,"_id":"BcMKHn3rYyM1QMSz"}
+{"$$deleted":true,"_id":"XGWrrNgbdwE7l9CY"}
+{"$$deleted":true,"_id":"bXnFCQ3rdrd5PXJ8"}
+{"$$deleted":true,"_id":"uqaI39kIckQ7b13k"}
+{"test":{"title":"TESTLISTA","userId":"TPzH64BUSzVK3VqO"},"_id":"GGFObEkKVwXQYfVM"}
+{"$$deleted":true,"_id":"GGFObEkKVwXQYfVM"}
+{"test":{"title":{"title":"Lägger till en ny lista","listId":"rrpgXrkQEIjhweiW"}},"_id":"Iwmbx5JsgRGT0Tgl"}
