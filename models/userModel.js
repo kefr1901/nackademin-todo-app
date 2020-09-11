@@ -52,6 +52,7 @@ function updateUser(id, username, password) {
 
 function deleteUser(id){
     return new Promise((resolve, reject) => {
+        console.log(id)
         userCollection.remove({ _id: id }, {}, (err, userRemoved) => {
             resolve(userRemoved + " user has been removed!");
         });

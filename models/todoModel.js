@@ -27,6 +27,14 @@ function findToDo(id) {
     })
 }
 
+function findToDoByUser(id) {
+    return new Promise((resolve, reject) => {
+        postCollection.find({user: id}, function (err, docs) {
+            resolve(docs)
+        });
+    })
+}
+
 function findToDos() {
     return new Promise((resolve, reject) => {
         postCollection.find({}, function (err, docs) {
@@ -55,6 +63,16 @@ function deleteToDo(id){
 });
 }
 
+function deleteUserTodos(id){
+    return new Promise((resolve, reject) => {
+    //postCollection.find({ _id: id }, (err, docs) => {
+        postCollection.remove({ user: id }, {}, (err, toDoRemoved) => {
+            resolve(toDoRemoved + " Todo has been removed!");
+        });
+   // });
+});
+}
+
 
 function clear(){
     return new Promise((resolve, reject) => {
@@ -76,4 +94,4 @@ function count() {
 
 
 
-module.exports = { insertToDB, findToDo, findToDos, updateToDo, deleteToDo, clear, count}
+module.exports = { insertToDB, findToDo, findToDos, updateToDo, deleteToDo, clear, count, deleteUserTodos, findToDoByUser}

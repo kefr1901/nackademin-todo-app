@@ -4,6 +4,7 @@ const todoRouter = require('./routes/todo')
 const userRouter = require('./routes/user')
 const authRouter = require('./routes/auth')
 const listRouter = require('./routes/list')
+const gdprRouter = require('./routes/gdpr')
 const cors = require('cors')
 
 const app = express()
@@ -18,6 +19,8 @@ app.use('/todos',todoRouter);
 app.use('/user',userRouter);
 app.use('/auth', authRouter);
 app.use('/lists', listRouter);
+app.use('/gdpr', gdprRouter);
+
 app.use(express.static(__dirname + '/public'));
 
 app.get("/", (req, res) => {

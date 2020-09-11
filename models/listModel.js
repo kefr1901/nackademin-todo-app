@@ -35,6 +35,12 @@ async function findList(id) {
     return result;
 }
 
+async function findListByUser(id) {
+    const result = await listCollection.findOne({ "test.userId": id })
+    console.log(result)
+    return result;
+}
+
 
 function updateList(id, title, listId ) {
   
@@ -50,6 +56,13 @@ function deleteList(id){
        console.log(result)
        return result;
 }
+
+function deleteUserList(id){
+    const result = listCollection.remove({"test.userId": id})
+    console.log(result)
+    return result;
+}
+
 
 
 async function clear() {
@@ -67,4 +80,4 @@ function count() {
 
 
 
-module.exports = { insertToDB, clear, count, findLists, findList, updateList, deleteList }
+module.exports = { insertToDB, clear, count, findLists, findList, updateList, deleteList, deleteUserList, findListByUser }
