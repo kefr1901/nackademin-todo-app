@@ -1,19 +1,27 @@
-const dataStore = require('nedb');
+//const dataStore = require('nedb');
 const express = require('express')
+const mongoose = require('mongoose')
 
-let postCollection
+/*let postCollection
 
 if(process.env.ENVIRONMENT === "development"){
    postCollection = new dataStore({ filename: './database/development/post.db', autoload: true });
 
 }else{
     postCollection = new dataStore({ filename: './database/test/post.db', autoload: true });
-}
+}*/
 
+const todoSchema = new mongoose.Schema({
+    email: {type: String, unique: true },
+    passwordDigest: String,
+    posts: Array
+})
+
+const Todo = mongoose.model('Todo', todoSchema)
 
 function insertToDB(toDo) {
     return new Promise((resolve, reject) => {
-        postCollection.insert(toDo, (err, newDoc) => {
+        Todo.insert(toDo, (err, newDoc) => {
             resolve(newDoc)
         });
     })
@@ -21,7 +29,7 @@ function insertToDB(toDo) {
 
 function findToDo(id) {
     return new Promise((resolve, reject) => {
-        postCollection.find({_id: id}, function (err, docs) {
+        Todo.find({_id: id}, function (err, docs) {
             resolve(docs)
         });
     })
@@ -29,7 +37,7 @@ function findToDo(id) {
 
 function findToDoByUser(id) {
     return new Promise((resolve, reject) => {
-        postCollection.find({user: id}, function (err, docs) {
+        Todo.find({user: id}, function (err, docs) {
             resolve(docs)
         });
     })
@@ -37,7 +45,7 @@ function findToDoByUser(id) {
 
 function findToDos() {
     return new Promise((resolve, reject) => {
-        postCollection.find({}, function (err, docs) {
+        Todo.find({}, function (err, docs) {
             resolve(docs)
         });
     })
@@ -45,7 +53,7 @@ function findToDos() {
 
 function updateToDo(id, title, done, groups ) {
     return new Promise((resolve, reject) => {
-            postCollection.update({ _id: id }, { title: title, done:done , groups: groups }, (err, updateDoc) => {
+        Todo.update({ _id: id }, { title: title, done:done , groups: groups }, (err, updateDoc) => {
                 resolve(updateDoc)
             });
        // });
@@ -56,7 +64,7 @@ function updateToDo(id, title, done, groups ) {
 function deleteToDo(id){
     return new Promise((resolve, reject) => {
     //postCollection.find({ _id: id }, (err, docs) => {
-        postCollection.remove({ _id: id }, {}, (err, toDoRemoved) => {
+        Todo.remove({ _id: id }, {}, (err, toDoRemoved) => {
             resolve(toDoRemoved + " Todo has been removed!");
         });
    // });
@@ -66,7 +74,7 @@ function deleteToDo(id){
 function deleteUserTodos(id){
     return new Promise((resolve, reject) => {
     //postCollection.find({ _id: id }, (err, docs) => {
-        postCollection.remove({ user: id }, {}, (err, toDoRemoved) => {
+        Todo.remove({ user: id }, {}, (err, toDoRemoved) => {
             resolve(toDoRemoved + " Todo has been removed!");
         });
    // });
@@ -76,7 +84,7 @@ function deleteUserTodos(id){
 
 function clear(){
     return new Promise((resolve, reject) => {
-    postCollection.remove({ }, { multi: true }, function (err, numRemoved) {
+        Todo.remove({ }, { multi: true }, function (err, numRemoved) {
         resolve()
       });
 });
@@ -84,7 +92,7 @@ function clear(){
 
 function count() {
     return new Promise((resolve, reject) => {
-        postCollection.count({}, function (err, docs) {
+        Todo.count({}, function (err, docs) {
             console.log(docs)
             resolve(docs)
         });

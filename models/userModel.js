@@ -1,7 +1,9 @@
-const Datastore = require('nedb');
+//const Datastore = require('nedb');
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
+/*
 let userCollection
 
 if(process.env.ENVIRONMENT === "development"){
@@ -9,8 +11,18 @@ if(process.env.ENVIRONMENT === "development"){
 
 }else{
     userCollection = new Datastore({ filename: './database/test/user.db', autoload: true });
-}
+}*/
 
+
+
+const userSchema = new mongoose.Schema({
+    email: {type: String, unique: true },
+    passwordDigest: String,
+    posts: Array
+})
+
+
+const User = mongoose.model('User', userSchema)
 
 function insertUser(newUser) {
     
@@ -19,7 +31,7 @@ function insertUser(newUser) {
                 reject("User already exist");
             }
              newUser.password = bcrypt.hashSync(newUser.password, 10)
-             userCollection.insert(newUser, (err, newDoc) => {
+             User.insert(newUser, (err, newDoc) => {
                  resolve(newDoc)
              });
          })
@@ -27,7 +39,7 @@ function insertUser(newUser) {
 
 function findUsers() {
     return new Promise((resolve, reject) => {
-        userCollection.find({}, function (err, docs) {
+        User.find({}, function (err, docs) {
             resolve(docs)
         });
     })
@@ -35,7 +47,7 @@ function findUsers() {
 
 function findUser(id) {
     return new Promise((resolve, reject) => {
-        userCollection.find({_id:id}, function (err, docs) {
+        User.find({_id:id}, function (err, docs) {
             resolve(docs)
         });
     })
@@ -43,7 +55,7 @@ function findUser(id) {
 
 function updateUser(id, username, password) {
     return new Promise((resolve, reject) => {
-        userCollection.update({ _id: id }, { username: username, password:password}, (err, updateDoc) => {
+        User.update({ _id: id }, { username: username, password:password}, (err, updateDoc) => {
                 resolve(updateDoc)
             });
     });
@@ -53,7 +65,7 @@ function updateUser(id, username, password) {
 function deleteUser(id){
     return new Promise((resolve, reject) => {
         console.log(id)
-        userCollection.remove({ _id: id }, {}, (err, userRemoved) => {
+        User.remove({ _id: id }, {}, (err, userRemoved) => {
             resolve(userRemoved + " user has been removed!");
         });
 });
@@ -63,7 +75,7 @@ function authUser(username, password) {
 
     console.log("kommer in i authUser")
     return new Promise((resolve, reject) => {
-        userCollection.findOne({username: username }, function (err, docs)  {
+        User.findOne({username: username }, function (err, docs)  {
             if(docs == null){
                 return reject('No user found')
             }
@@ -81,7 +93,7 @@ function authUser(username, password) {
 
 function checkUserNameExist(username) {
     return new Promise((resolve, reject) => {
-        userCollection.find({ "username": username}, function (err, docs) {
+        User.find({ "username": username}, function (err, docs) {
           if(docs.length>0){
             resolve(true)
           }
@@ -94,7 +106,7 @@ function checkUserNameExist(username) {
 
 function count() {
     return new Promise((resolve, reject) => {
-        userCollection.count({}, function (err, docs) {
+        User.count({}, function (err, docs) {
             console.log(docs)
             resolve(docs)
         });
@@ -104,7 +116,7 @@ function count() {
 
 function clear(){
     return new Promise((resolve, reject) => {
-    userCollection.remove({ }, { multi: true }, function (err, numRemoved) {
+        User.remove({ }, { multi: true }, function (err, numRemoved) {
         resolve()
       });
 });
