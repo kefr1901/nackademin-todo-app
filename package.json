@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "cross-env ENVIRONMENT=test&& mocha -recursive"
+    "test": "cross-env ENVIRONMENT=test&& mocha -recursive",
+    "start": "node start.js"
+
   },
   "repository": {
     "type": "git",
