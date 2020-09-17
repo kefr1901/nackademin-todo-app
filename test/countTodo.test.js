@@ -1,17 +1,22 @@
+const Database = require('../database')
 const chai = require('chai')
 //const { expect } = require('chai');
-const todoModel = require('../models/todoModel')
+const Todo = require('../models/todoModel')
 chai.should();
 
 describe('count all todos', () => {
+    before( async () => {
+        await Database.connect()
+    })
     beforeEach(async () => {
-        await todoModel.clear();
+        await Todo.clear();
     });
     it('should count all todos', async () => {
-        await todoModel.insertToDB({ title: "Testing a new todo", dode: true })
-        const result = await todoModel.count()
+        await Todo.insertToDB({ title: "Testing a new todo :P", dode: true })
+        const result = await Todo.count()
         result.should.be.a('number')
         result.should.equal(1)
         result.should.not.equal(6)
+        
     })
 })

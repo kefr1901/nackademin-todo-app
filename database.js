@@ -22,12 +22,15 @@ switch(process.env.ENVIRONMENT){
 async function connect(){
     
     let uri = await mongoDatabase.getUri()
+    //let uri = 'mongodb://localhost:27017/todo';
+
 
     await mongoose.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
         useCreateIndex: true
+        
     })
 }
 

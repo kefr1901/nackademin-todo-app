@@ -12,9 +12,8 @@ if (process.env.ENVIRONMENT === "development") {
     listCollection = new Datastore({ filename: './database/test/list.db', autoload: true });
 }*/
 const listSchema = new mongoose.Schema({
-    email: {type: String, unique: true },
-    passwordDigest: String,
-    posts: Array
+   title: String,
+   userId: String,
 })
 
 const List = mongoose.model('List', listSchema)
@@ -25,7 +24,7 @@ async function insertToDB(title, userId) {
         title: title,
         userId: userId
     }
-    const result = await List.insert({test })
+    const result = await List.create({test })
     return result;
 }
 
@@ -39,7 +38,7 @@ async function findLists() {
 
 async function findList(id) {
     const result = await List.findOne({ _id: id })
-    console.log(result)
+    //console.log(result)
     return result;
 }
 
@@ -72,11 +71,11 @@ function deleteUserList(id){
 }
 
 
-
 async function clear() {
 
     const doc = await List.remove({}, { multi: true });
 };
+
 function count() {
     return new Promise((resolve, reject) => {
         List.count({}, function (err, docs) {

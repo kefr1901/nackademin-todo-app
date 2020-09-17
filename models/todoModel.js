@@ -12,16 +12,16 @@ if(process.env.ENVIRONMENT === "development"){
 }*/
 
 const todoSchema = new mongoose.Schema({
-    email: {type: String, unique: true },
-    passwordDigest: String,
-    posts: Array
+    title: String,
+    done: Boolean,
+    listId: String,
 })
 
 const Todo = mongoose.model('Todo', todoSchema)
 
 function insertToDB(toDo) {
     return new Promise((resolve, reject) => {
-        Todo.insert(toDo, (err, newDoc) => {
+        Todo.create(toDo, (err, newDoc) => {
             resolve(newDoc)
         });
     })

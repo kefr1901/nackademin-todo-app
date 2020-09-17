@@ -16,26 +16,26 @@ if(process.env.ENVIRONMENT === "development"){
 
 
 const userSchema = new mongoose.Schema({
-    email: {type: String, unique: true },
-    passwordDigest: String,
-    posts: Array
+    username: String,
+    password: String,
+    groups: String,
 })
 
 
 const User = mongoose.model('User', userSchema)
 
-function insertUser(newUser) {
-    
-        return new Promise(async(resolve, reject) => {
+            async function insertUser(newUser) {
+                
             if(await checkUserNameExist(newUser.username)){
-                reject("User already exist");
+                return {error: "user already exist"}
             }
              newUser.password = bcrypt.hashSync(newUser.password, 10)
-             User.insert(newUser, (err, newDoc) => {
-                 resolve(newDoc)
-             });
-         })
-}
+            const user = await User.create(newUser)
+             console.log(user)
+             return user;
+             
+         }
+
 
 function findUsers() {
     return new Promise((resolve, reject) => {
